@@ -40,14 +40,14 @@ public class Print{
 
                 while(i < text.length()){
                     str.append(text.charAt(i));
-                    if(text.charAt(i) == '0') isReset = true;
+                    if(text.charAt(i) == '0' && text.charAt(i-1) == '[') isReset = true;
                     i++;
                     if(text.charAt(i) == 'm') break;
                 }
 
                 if(isReset){
                     if(!styles.isEmpty()) styles.pop();
-                    styledString.append(str);
+                    else styledString.append(str);
                 }
                 else if(!styles.isEmpty()){
                     styles.push(str);
