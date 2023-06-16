@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import com.ballot_box.ui.MainUI;
+
 
 public class InputTaking{
     String dtmFormat;
@@ -23,7 +25,7 @@ public class InputTaking{
             return Integer.parseInt(output);
         }
         catch(Exception e){
-            // Messages.inputError(cancelable);
+            MainUI.inputError(cancelable);
             return integer(cancelable);
         }
     }
@@ -52,7 +54,7 @@ public class InputTaking{
             return LocalDate.parse(output, dtm);
         }
         catch(Exception e){
-            // Messages.inputError(true);
+            MainUI.inputError(true);
             return date(format);
         }
     }
