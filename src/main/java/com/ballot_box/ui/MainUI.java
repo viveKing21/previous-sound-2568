@@ -59,6 +59,14 @@ final public class MainUI {
         "Logout"
     };
 
+    public static String[] USER_PAGE_OPTION = new String[]{
+        "Start Voting",
+        "View Campaign",
+        "View Profile",
+        "Update Profile",
+        "Delete Account",
+        "Logout"
+    };
     public static void landingPage(){
         Print.printStyle(AppInfo.LOGO, Design.GREEN);
         Print.printLine(1);
