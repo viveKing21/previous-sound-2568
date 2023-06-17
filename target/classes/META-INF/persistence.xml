@@ -13,6 +13,8 @@ version="2.0">
 		
 		<!-- this will show the queries on console -->
 	    <property name="hibernate.show_sql" value="true" />
+		
+	    <property name="hibernate.generate_statistics" value="false" />
 
 	    <!-- this will create a new table structure for entity classes if not exists already -->
 	    <property name="hibernate.hbm2ddl.auto" value="update" />
