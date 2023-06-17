@@ -2,20 +2,20 @@ package com.ballot_box.entities;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
-public class Profile {
+public class Profile{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -23,37 +23,40 @@ public class Profile {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "date_of_birth", nullable = true)
-    private LocalDate dateOfBirth;
+    private String email;
 
     @Lob
-    private String biography = null;
+    private String biography;
 
-    @Embedded
-    private Address address = null;
+    @Column(name = "date_of_birth", nullable = false)
+    private LocalDate dateOfBirth;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToOne(mappedBy = "profile")
     private User user;
-    
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+
     @Column(name = "created_at", nullable = false)
     private LocalDate createdAt = LocalDate.now();
-
+    
     @Column(name = "updated_at", nullable = false)
     private LocalDate updatedAt = LocalDate.now();
 
-    public Profile(String firstName, String lastName, LocalDate dateOfBirth, Address address) {
+    public Profile(){
+        super();
+    }
+
+    public Profile(String firstName, String lastName, String email, LocalDate dateOfBirth, String biography) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.address = address;
+        this.biography = biography;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -72,28 +75,26 @@ public class Profile {
         this.lastName = lastName;
     }
 
-    public LocalDate getDateOfBirth() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public LocalDate getDOB() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDOB(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
     public String getBiography() {
         return biography;
     }
 
     public void setBiography(String biography) {
         this.biography = biography;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public User getUser() {
@@ -104,12 +105,16 @@ public class Profile {
         this.user = user;
     }
 
-    public LocalDate getCreatedAt() {
-        return createdAt;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
     public LocalDate getUpdatedAt() {
@@ -119,7 +124,4 @@ public class Profile {
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    
-    
 }

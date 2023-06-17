@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import com.ballot_box.exceptions.SomethingWentWrongException;
 import com.ballot_box.ui.MainUI;
 
 
@@ -27,6 +28,38 @@ public class InputTaking{
         catch(Exception e){
             MainUI.inputError(cancelable);
             return integer(cancelable);
+        }
+    }
+    public Long longInt(boolean cancelable){
+        String output = sc.next().trim();
+
+        if(cancelable && (output.charAt(0) == 'c' || output.charAt(0) == 'C')){
+            Print.printLine(1);
+            return null;
+        }
+        try{
+            return Long.parseLong(output);
+        }
+        catch(Exception e){
+            MainUI.inputError(cancelable);
+            return longInt(cancelable);
+        }
+    }
+    public Boolean bool(boolean cancelable){
+        String output = sc.next().trim();
+
+        if(cancelable && (output.charAt(0) == 'c' || output.charAt(0) == 'C')){
+            Print.printLine(1);
+            return null;
+        }
+        try{
+            if(output.equalsIgnoreCase("y")) return true;
+            if(output.equalsIgnoreCase("n")) return false;
+            throw new SomethingWentWrongException("Invalid input");
+        }
+        catch(Exception e){
+            MainUI.inputError(cancelable);
+            return bool(cancelable);
         }
     }
     public String string(){
