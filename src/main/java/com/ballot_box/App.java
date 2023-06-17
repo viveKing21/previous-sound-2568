@@ -7,12 +7,14 @@ import com.ballot_box.utility.Print;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.List;
 
+import com.ballot_box.dao.ElectionDao;
 import com.ballot_box.entities.Address;
 import com.ballot_box.entities.Campaign;
 import com.ballot_box.entities.Candidate;
@@ -20,6 +22,7 @@ import com.ballot_box.entities.Election;
 import com.ballot_box.entities.Profile;
 import com.ballot_box.entities.ProposedAgenda;
 import com.ballot_box.entities.User;
+import com.ballot_box.entities.Votes;
 import com.ballot_box.exceptions.CampaignNotFoundException;
 import com.ballot_box.exceptions.NotFoundException;
 import com.ballot_box.exceptions.SomethingWentWrongException;
@@ -270,6 +273,24 @@ public class App
                                         MainUI.error(e.getMessage());
                                     }
                                 }
+                                case 3: {
+                                    break;
+                                }
+                                case 4: {
+                                    
+                                    break;
+                                }
+                                case 5: {
+                                    
+                                    break;
+                                }
+                                case 6: {
+                                    
+                                    break;
+                                }
+                                case 7: {
+                                    continue MAIN_LOOP;
+                                }
                             }
                         }
 
@@ -278,6 +299,98 @@ public class App
                     case 3:{
                         MainUI.selectedOption(MainUI.LANDING_PAGE_OPTION_DEFAULT[option-1]);
                         Print.printLine(1);
+
+                        MainUI.optionsTitle("PLEASE ENTER ACCOUNT DETAILS", true);
+
+                        MainUI.takeInput("USERNAME", "String");
+                        String username = it.string();
+                        if(username == null) continue MAIN_LOOP;
+
+                        Print.printLine(1);
+
+                        MainUI.takeInput("PASSWORD", "String");
+                        String password = it.string();
+                        if(password == null) continue MAIN_LOOP;
+
+                        UserService userService = new UserServiceImp();
+
+                        User user;
+
+                        try{
+                            user = userService.getUserByUsername(username);
+
+                            if(user.getPassword().equals(password) == false){
+                                throw new UserNotFoundException("User not found");
+                            }
+                        }
+                        catch(UserNotFoundException e){
+                            Print.printLine(1);
+                            MainUI.warning("Invalid Credentials!");
+                            Thread.sleep(1000);
+                            continue MAIN_LOOP;
+                        }
+                        catch(SomethingWentWrongException e){
+                            MainUI.error(e);
+                            continue MAIN_LOOP;
+                        }
+                        
+                        MainUI.welcomeMsg(user.getProfile().getFirstName() + " " + user.getProfile().getLastName());
+
+                        USER_LOOP:
+                        while(true){
+                            MainUI.createOption(MainUI.USER_PAGE_OPTION, false);
+                            Print.printLine(1);
+                            MainUI.optionInput();
+
+                            Integer userOption = it.integer(false);
+                            Print.printLine(1);
+
+                            MainUI.selectedOption(MainUI.USER_PAGE_OPTION[userOption-1]);
+
+                            Print.printLine(1);
+
+                            switch(userOption){
+                                case 1:{
+                                    ElectionService electionService = new ElectionServiceImp();
+                                    Election election;
+
+                                    try{
+                                        election = electionService.getCurrentElection();
+
+                                        if(election.getCampaigns().isEmpty()) throw new NotFoundException("No election is live");
+
+                                        MainUI.viewCampaign(new ArrayList<>(election.getCampaigns()));
+
+                                        Print.printLine(1);
+
+                                        MainUI.takeInput("Campaign Id", "Integer");
+                                        Integer campaignId = it.integer(true);
+                                        if(campaignId == null) continue USER_LOOP;
+
+                                        Votes votes = new Votes(user);
+                                    }
+                                    catch(Exception e){
+                                        MainUI.error(e.getMessage());
+                                    }
+                                    break;
+                                }
+                                case 2:{
+                                    break;
+                                }
+                                case 3:{
+                                    break;
+                                }
+                                case 4:{
+                                    break;
+                                }
+                                case 5:{
+                                    break;
+                                }
+                                case 6:{
+                                    continue MAIN_LOOP;
+                                }
+                            }
+                        }
                     }
                     case 4:{
                         MainUI.selectedOption(MainUI.LANDING_PAGE_OPTION_DEFAULT[option-1]);

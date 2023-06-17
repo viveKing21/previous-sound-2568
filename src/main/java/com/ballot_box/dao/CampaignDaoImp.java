@@ -5,10 +5,8 @@ import java.util.List;
 import org.hibernate.mapping.Set;
 
 import com.ballot_box.entities.Campaign;
-import com.ballot_box.entities.User;
 import com.ballot_box.exceptions.CampaignNotFoundException;
 import com.ballot_box.exceptions.SomethingWentWrongException;
-import com.ballot_box.exceptions.UserNotFoundException;
 import com.ballot_box.utility.Connection;
 
 import jakarta.persistence.EntityManager;
@@ -49,5 +47,4 @@ public class CampaignDaoImp implements CampaignDao{
         if(campaigns.isEmpty()) throw new CampaignNotFoundException("Campaign list is empty");
         return campaigns;
     }
-    
 }
